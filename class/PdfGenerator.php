@@ -4,20 +4,20 @@ namespace Offer;
 require_once __DIR__ . '/../vendor/fpdf/fpdf.php';
 
 class PdfGenerator {
-    public function generatePDF($company, $services, $prices) {
+    public function generatePDF($company, $services, $prices, $guarantee) {
         // Tworzenie nowego dokumentu PDF
         $pdf = new Fpdf();
         $pdf->AddPage();
 
-        $city = iconv('utf-8', 'iso-8859-2', 'Tarnowskie Góry ');
+        $city = iconv('utf-8', 'iso-8859-2', 'Tarnowskie Góry, ');
         $text1 = iconv('utf-8', 'iso-8859-2', 'Reprezentowaną przez DAMIAN CZERNIK z siedzibą w :');
         $text2 = iconv('utf-8', 'iso-8859-2', '42-600 Tarnowskie Góry');
-        $text3 = iconv('utf-8', 'iso-8859-2', 'Zamawiający zleca ,a Wykonawca zobowiązuję się wykonać zlecenie polegające na wykonaniu: ');
-        $text4 = iconv('utf-8', 'iso-8859-2', 'ul.Legionów37/2 m6');
+        $text3 = iconv('utf-8', 'iso-8859-2', 'Zamawiający zleca, a Wykonawca zobowiązuję się wykonać zlecenie polegające na wykonaniu: ');
+        $text4 = iconv('utf-8', 'iso-8859-2', 'ul.Legionów 37/2 m6');
         $text5 = iconv('utf-8', 'iso-8859-2', 'zwanym dalej Wykonawcą, a');
         $text6 = iconv('utf-8', 'iso-8859-2', 'zwanym w dalszej treści umowy Zamawiającym, została zawarta umowa o następującej treści:');
         $text7 = iconv('utf-8', 'iso-8859-2', 'Jeśli chodzi o płatność to zamawiający w dniu podpisania umowy przekazuje wykonawcy połowe');
-        $text8 = iconv('utf-8', 'iso-8859-2', 'kwoty głownej t.j ');
+        $text8 = iconv('utf-8', 'iso-8859-2', 'kwoty głownej tj. ');
         $text9 = iconv('utf-8', 'iso-8859-2', 'Wykonawca udziela gwarancji na okres: 24 miesiące.');
         $text10 = iconv('utf-8', 'iso-8859-2', 'W okresie gwarancji Wykonawca obowiązuje się do usunięcia wad na koszt własny w terminie do 14 dni od dnia powiadomienia o ich ujawnieniu.');
 
@@ -42,52 +42,63 @@ class PdfGenerator {
         $pdf->Cell(190, 10, $city . $date, 0, 1, 'R');
 
         // Dodanie obrazu
-        $pdf->Image('img/logo.jpg', 10, 10, 30);
+        $pdf->Image('img/logo.jpg', 5, 10, 30);
 
         $pdf->Ln(20); // Nowa linia
-        $pdf->SetX(10);
+        $pdf->SetX(5);
         $pdf->Cell(40, 10, 'PRO OGRODZENIA');
         $pdf->Ln(5); // Nowa linia
-        $pdf->SetX(10);
+        $pdf->SetX(5);
         $pdf->Cell(40, 10, $text1);
         $pdf->Ln(5);
-        $pdf->SetX(10);
+        $pdf->SetX(5);
         $pdf->Cell(40, 10, $text2);
         $pdf->Ln(5);
-        $pdf->SetX(10);
+        $pdf->SetX(5);
         $pdf->Cell(40, 10, $text4);
         $pdf->Ln(5);
-        $pdf->SetX(10);
+        $pdf->SetX(5);
         $pdf->Cell(40, 10, $text5);
         $pdf->Ln(10);
 
         // Dodanie danych firmy
-        $pdf->SetX(10);
+        $pdf->SetX(5);
         $pdf->Cell(40, 10, $companyName);
         $pdf->Ln(5); // Nowa linia
-        $pdf->SetX(10);
+        $pdf->SetX(5);
         $pdf->Cell(40, 10, $companyAddress);
         $pdf->Ln(5);
-        $pdf->SetX(10);
+        $pdf->SetX(5);
         $pdf->Cell(40, 10, $companyCity);
         $pdf->Ln(7);
-        $pdf->SetX(10);
+        $pdf->SetX(5);
         $pdf->Cell(40, 10, $text6);
         $pdf->Ln(10);
 
         // Dodanie usług i cen
-        $pdf->SetX(10);
+        $pdf->SetX(5);
         $pdf->Cell(40, 10, $text3);
         $pdf->Ln(10); // Nowa linia
-        $pdf->SetDrawColor(200, 200, 200);
         $pdf->SetFont('sanspl', '', 10);
+        // Ustawienie koloru i grubości obramowania
+        $pdf->SetDrawColor(150, 150, 150);
+        $pdf->SetLineWidth(0.5); // Ustawienie grubości linii na 0.5 mm
+        $pdf->SetX(5);
+        $pdf->Cell(150, 10, 'Usluga', 1);
+        $pdf->Cell(25, 10, 'Gwarancja', 1);
+        $pdf->Cell(25, 10, 'Cena', 1, 1);
+        $pdf->Ln(0); // Nowa linia
+        $pdf->SetLineWidth(0.2); // Ustawienie grubości linii na 0.5 mm
         for ($i = 0; $i < count($services); $i++) {
-            $pdf->SetX(10);
+            $pdf->SetX(5);
             // Usługa
             $service = iconv('utf-8', 'iso-8859-2', $services[$i]);
+            $guarante = iconv('utf-8', 'iso-8859-2', $guarantee[$i]);
             $pdf->Cell(150, 10, $service, 1);
             // Cena
-            $pdf->Cell(40, 10, $prices[$i] . ' PLN', 1, 1, 'R');
+            $pdf->Cell(25, 10, $guarante, 1);
+            // Cena
+            $pdf->Cell(25, 10, $prices[$i] . ' PLN', 1, 1, 'R');
             $pdf->Ln(0); // Nowa linia
         }
         // Ustawienie koloru i grubości obramowania
@@ -95,24 +106,23 @@ class PdfGenerator {
         $pdf->SetLineWidth(0.5); // Ustawienie grubości linii na 0.5 mm
 
         $pdf->SetFont('sanspl', '', 11);
-        $pdf->SetX(10);
-        $pdf->Ln(0.5);
+        $pdf->SetX(5);
         // Usługa
-        $pdf->Cell(150, 10, 'Razem', 1);
+        $pdf->Cell(165, 10, 'Razem', 1);
         // Cena
-        $pdf->Cell(40, 10, $sum . ' PLN', 1, 1, 'R');
+        $pdf->Cell(35, 10, $sum . ' PLN', 1, 1, 'R');
         $pdf->Ln(0); // Nowa linia
 
-        $pdf->SetX(10);
+        $pdf->SetX(5);
         $pdf->Cell(40, 10, $text7); 
         $pdf->Ln(5);
-        $pdf->SetX(10);
+        $pdf->SetX(5);
         $pdf->Cell(40, 10, $text8 . ($sum/2) . ' PLN');  
         $pdf->Ln(10);
-        $pdf->SetX(10);
-        $pdf->Cell(40, 10, $text9);     
-        $pdf->Ln(10);
-        $pdf->SetX(10);
+        // $pdf->SetX(10);
+        // $pdf->Cell(40, 10, $text9);     
+        // $pdf->Ln(10);
+        $pdf->SetX(5);
         $pdf->MultiCell(190, 5, $text10);  
         $pdf->SetFont('sanspl', '', 9);
         $pdf->Ln(10);

@@ -24,6 +24,7 @@
                     <h3>Usługi:</h3>
                     <div class="service-entry">
                         <input type="text" name="services[]" placeholder="Usługa" required>
+                        <input type="text" name="guarantee[]" placeholder="Gwarancja" required>
                         <input type="number" name="prices[]" placeholder="Cena" required>
                     </div>
                 </div>
@@ -43,6 +44,12 @@
             serviceInput.name = 'services[]';
             serviceInput.placeholder = 'Usługa';
             serviceInput.required = true;
+
+            var guaranteeInput = document.createElement('input');
+            guaranteeInput.type = 'text';
+            guaranteeInput.name = 'guarantee[]';
+            guaranteeInput.placeholder = 'Gwarancja';
+            guaranteeInput.required = true;
             
             var priceInput = document.createElement('input');
             priceInput.type = 'number';
@@ -58,6 +65,7 @@
             };
             
             serviceDiv.appendChild(serviceInput);
+            serviceDiv.appendChild(guaranteeInput);
             serviceDiv.appendChild(priceInput);
             serviceDiv.appendChild(removeButton);
             
