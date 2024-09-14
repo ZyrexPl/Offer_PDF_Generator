@@ -4,7 +4,7 @@ namespace Offer;
 require_once __DIR__ . '/../vendor/fpdf/fpdf.php';
 
 class PdfGenerator {
-    public function generatePDF($company, $services, $prices, $guarantee) {
+    public function generatePDF($company, $services, $prices, $guarantee, $leadTime) {
         // Tworzenie nowego dokumentu PDF
         $pdf = new Fpdf();
         $pdf->AddPage();
@@ -88,7 +88,7 @@ class PdfGenerator {
         $pdf->Cell(25, 10, 'Gwarancja', 1);
         $pdf->Cell(25, 10, 'Cena', 1, 1);
         $pdf->Ln(0); // Nowa linia
-        $pdf->SetLineWidth(0.2); // Ustawienie grubości linii na 0.5 mm
+        $pdf->SetLineWidth(0.2);
         for ($i = 0; $i < count($services); $i++) {
             $pdf->SetX(5);
             // Usługa
@@ -103,7 +103,7 @@ class PdfGenerator {
         }
         // Ustawienie koloru i grubości obramowania
         $pdf->SetDrawColor(150, 150, 150);
-        $pdf->SetLineWidth(0.5); // Ustawienie grubości linii na 0.5 mm
+        $pdf->SetLineWidth(0.5);
 
         $pdf->SetFont('sanspl', '', 11);
         $pdf->SetX(5);
@@ -122,6 +122,10 @@ class PdfGenerator {
         // $pdf->SetX(10);
         // $pdf->Cell(40, 10, $text9);     
         // $pdf->Ln(10);
+        $leadTime = iconv('utf-8', 'iso-8859-2', $leadTime);
+        $pdf->SetX(5);
+        $pdf->Cell(40, 10, 'Termin realizacji: ' . $leadTime); 
+        $pdf->Ln(10);
         $pdf->SetX(5);
         $pdf->MultiCell(190, 5, $text10);  
         $pdf->SetFont('sanspl', '', 9);

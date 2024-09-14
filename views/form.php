@@ -20,14 +20,18 @@
                 <label for="companyCity">Kod i miasto:</label>
                 <input type="text" id="companyCity" name="companyCity" required><br>
 
+                <label for="leadTime">Termin realizacji:</label>
+                <input type="text" id="leadTime" name="leadTime" required><br>
+
                 <div id="services">
                     <h3>Usługi:</h3>
                     <div class="service-entry">
-                        <input type="text" name="services[]" placeholder="Usługa" required>
+                        <input type="text" class="full-width" name="services[]" placeholder="Usługa" required>
                         <input type="text" name="guarantee[]" placeholder="Gwarancja" required>
                         <input type="number" name="prices[]" placeholder="Cena" required>
                     </div>
                 </div>
+
                 <button type="button" onclick="addService()">Dodaj usługę</button><br>
                 
                 <input type="submit" value="Generuj PDF">

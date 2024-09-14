@@ -16,10 +16,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $services = $_POST['services'];
     $guarantee = $_POST['guarantee'];
     $prices = $_POST['prices'];
+    $leadTime = $_POST['leadTime'];
 
     // Stworzenie obiektu PdfGenerator i wywołanie metody do generowania PDF
     $pdfGenerator = new PdfGenerator();
-    $pdfGenerator->generatePDF($company, $services, $prices, $guarantee);
+    $pdfGenerator->generatePDF($company, $services, $prices, $guarantee, $leadTime);
 } else {
     // Jeśli formularz nie został wysłany, wyświetl widok z formularzem
     require 'views/form.php';
